@@ -67,7 +67,7 @@ function getNumber(i) {
                   Click <a href="https://www.adducation.info/general-knowledge-travel-and-transport/emergency-numbers/"><b>here</b></a> for countrywise list of emergency numbers
                   </div>`
       } else {
-        var printer = ["COUNTRY", "CALLCODES", "EMERGENCY", "POLICE", "AMBULANCE", "FIRE"];
+        var printer = ["CALLCODES", "EMERGENCY", "POLICE", "AMBULANCE", "FIRE"];
         msg = `<div class="ui six tiny horizontal statistics">`;
         printer.forEach(field => {
           msg = msg + `<div class="statistic">
