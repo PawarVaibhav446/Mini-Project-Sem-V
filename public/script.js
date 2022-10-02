@@ -51,14 +51,12 @@ var behavior = new H.mapevents.Behavior(mapEvents);
 
 // Emergency Contacts:
 function getNumber(i) {
-  /* numbers */
   var msg;
-  // var countryName = i[i.length - 1].slice(1);
   var countryName = i
   $.ajax({
     url: window.location.href + "view/" + countryName,
     type: 'GET',
-    dataType: 'json', // added data type
+    dataType: 'json',
     async: false,
     success: function (data) {
       if (data['COUNTRY'] == null) {
@@ -108,8 +106,6 @@ function revGeocode(lat, lon) {
 
   function onResult(result) {
     if (result.items.length > 0) {
-      // console.log(result.items[0].address)
-      // console.log(result.items[0].address.countryName)
       var x = result.items[0].address.countryName;
       document.getElementById("status").innerHTML = '<h3>' + result.items[0].title + '</h3>';
       // var i = x.split(",");
@@ -547,7 +543,7 @@ function route() {
     document.getElementById("routeStats").style.display = 'initial'
     document.getElementById("totalDuration").innerHTML = (duration / 3600).toFixed(2) + " hrs"
     document.getElementById("totalLength").innerHTML = (length / 1000).toFixed(2) + " km"
-    document.getElementById("totalConsumption").innerHTML = consumption.toFixed(2)
+    document.getElementById("totalConsumption").innerHTML = consumption.toFixed(2) + " watts"
 
   });
 

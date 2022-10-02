@@ -1,27 +1,28 @@
-var dbdir    = './database'                 ;
-var dbfile   = 'helpline.db'                ;
-var dbpath   = dbdir + '/' + dbfile         ;
 
-var port     = process.env.PORT || 3033     ;
-var hostname = '0.0.0.0'                    ;
+// Connecting DataBase
 
-//--------------------------------------------------------------------
+var dbdir = './database';
+var dbfile = 'helpline.db';
+var dbpath = dbdir + '/' + dbfile;
 
-var sqlite3 = require ('sqlite3').verbose() ;
-var express = require ('express')           ;
-var app     = express()                     ;
+// Server
 
-//### How is error here handled?
-//### What creates the subdir?
-//###
-var db = new sqlite3.Database (dbpath)          ; 
-app.set("view engine","ejs")                    ;
-app.use(express.static(__dirname + '/public'))  ;
+var port = process.env.PORT || 3033;
+var hostname = '0.0.0.0';
 
-//--------------------------------------------------------------------
-// Utility routine.
+// Require Dependencies 
 
-function HandleResult (err, str_op_type) {
+var sqlite3 = require('sqlite3').verbose();
+var express = require('express');
+var app = express();
+
+
+var db = new sqlite3.Database(dbpath);
+app.set("view engine", "ejs");
+app.use(express.static(__dirname + '/public'));
+
+
+function HandleResult(err, str_op_type) {
     var foo;
 
     if (err) {
@@ -30,28 +31,19 @@ function HandleResult (err, str_op_type) {
     }
 
     foo = str_op_type + " successful";
-    console.log (foo);
+    console.log(foo);
     return foo;
 }
 
-//--------------------------------------------------------------------
-// DB Handle
 
-// db.run ('CREATE TABLE IF NOT EXISTS emergency(id TEXT, name TEXT)');
-
-//--------------------------------------------------------------------
-// HomePage
-
-app.get("/",function(req,res){
-	res.render("home.ejs");
+app.get("/", function (req, res) {
+    res.render("home.ejs");
 });
 
-//--------------------------------------------------------------------
-// Operation: Read. ### different from other Read how?
 
-app.get ('/view/:country', function (req, res) {
-    db.serialize (() => {
-        db.each (`SELECT Country COUNTRY, Emergency EMERGENCY,
+app.get('/view/:country', function (req, res) {
+    db.serialize(() => {
+        db.each(`SELECT Country COUNTRY, Emergency EMERGENCY,
         Police POLICE, Ambulance AMBULANCE, Fire FIRE,
         "Call Codes" CALLCODES FROM helpcode WHERE UPPER(Country) = ?
         UNION ALL
@@ -59,70 +51,45 @@ app.get ('/view/:country', function (req, res) {
         LIMIT 1;`,
             [req.params.country.toUpperCase()], function (err, row) {
 
-            if (err) {
-                res.send ("[GET]: failed on /view/"+req.params.country);
-                return console.error (err.message);
-            }
+                if (err) {
+                    res.send("[GET]: failed on /view/" + req.params.country);
+                    return console.error(err.message);
+                }
 
-            res.send(row);
-            /*
-            res.send(`COUNTRY: ${row.COUNTRY}, ` +
-            `EMERGENCY: ${row.EMERGENCY}, POLICE: ${row.POLICE}, ` +
-            `AMBULANCE: ${row.AMBULANCE}, FIRE: ${row.FIRE}, ` +
-            `CALL CODES: ${row.CALLCODES} \n`);
-            */
-            console.log ("[GET]: successful on /view/"+req.params.country);
-        });
+                res.send(row);
+                console.log("[GET]: successful on /view/" + req.params.country);
+            });
     });
 });
 
-//--------------------------------------------------------------------
-// ### What? ALL DB
 
-app.get ('/allhelp', function (req, res) {
+app.get('/allhelp', function (req, res) {
     var records = [];
 
     db.serialize(() => {
-        db.all (`SELECT Country COUNTRY, Emergency EMERGENCY,
+        db.all(`SELECT Emergency EMERGENCY,
         Police POLICE, Ambulance AMBULANCE, Fire FIRE,
         "Call Codes" CALLCODES FROM helpcode ORDER BY Country`,
-            [], (err , rows) => {
+            [], (err, rows) => {
 
-            if (err) {
-                console.log ("[GET]: failed on /allhelp")
-                console.log (err.message);
-//### should this return or throw an error or what?
-            }
+                if (err) {
+                    console.log("[GET]: failed on /allhelp")
+                    console.log(err.message);
+                }
 
-            res.send(rows);
-            console.log ("[GET]: successful on /allhelp");
+                res.send(rows);
+                console.log("[GET]: successful on /allhelp");
 
-            /*
-            // console.log (rows);
-            rows.forEach ((row) => {
-                res.write(`COUNTRY: ${row.COUNTRY}, ` +
-                `EMERGENCY: ${row.EMERGENCY}, POLICE: ${row.POLICE}, ` +
-                `AMBULANCE: ${row.AMBULANCE}, FIRE: ${row.FIRE}, ` +
-                `CALL CODES: ${row.CALLCODES} \n`);
-            })
-            res.end();
-            */
-        });
+            });
     });
 });
 
-//--------------------------------------------------------------------
-// Fallback Request.
-app.get("*", (req,res) => {
+// If Not Found: 
+
+app.get("*", (req, res) => {
     res.render("404.ejs");
 });
 
-//--------------------------------------------------------------------
-// Main program (Listener).
-
-app.listen (port, hostname, function() {
-    console.log ("Server started on port: "+ port);
+app.listen(port, hostname, function () {
+    console.log("Server Started on Port: " + port);
 });
-
-//--------------------------------------------------------------------
-// End of file.
