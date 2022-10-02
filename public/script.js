@@ -1,10 +1,12 @@
 // color variables
 var start_color = '#CE3000';
 var end_color = '#47B700';
+
 // battery slider variables
 var batteryLvl = 50;
 var slider = document.getElementById('batteryValInp');
 var batteryDisplay = document.getElementById('batteryVal');
+
 // car type select variable
 var carType = 'hatchback';
 
@@ -264,7 +266,7 @@ function setUpClickListener(map) {
   }
 
 
-  document.getElementById("status").innerHTML = "<h4>Select <b>START</b> and <b>END</b> points on the map</h4>";
+  document.getElementById("status").innerHTML = "<h4>Select <b>START</b> and <b>END</b> Points on the Map</h4>";
   var cnt = 0;
   map.addEventListener('tap', fnc);
   map.removeEventListener('tap', globalFncTap);
@@ -275,7 +277,7 @@ function setUpClickListener(map) {
 
     var ans = Pos.lat + ',' + Pos.lng;
     if (cnt == 0) {
-      document.getElementById("status").innerHTML = "<h4><b>START</b> point selected</h4>";
+      document.getElementById("status").innerHTML = "<h4><b>START</b> Point Selected</h4>";
       str = ans;
       let strIcon = new H.map.Icon('assets/start.png');
       let strMarker = new H.map.Marker(Pos, { icon: strIcon });
@@ -284,12 +286,12 @@ function setUpClickListener(map) {
       console.log("START: " + str);
     }
     if (cnt == 1) {
-      document.getElementById("status").innerHTML = "<h4><b>END</b> point selected</h4>";
+      document.getElementById("status").innerHTML = "<h4><b>END</b> Point Selected</h4>";
       end = ans;
       let endIcon = new H.map.Icon('assets/end.png');
       let endMarker = new H.map.Marker(Pos, { icon: endIcon });
       map.addObject(endMarker);
-      endMarker.setData("END for routing!");
+      endMarker.setData("END for Routing!");
       console.log("END: " + end);
     }
 

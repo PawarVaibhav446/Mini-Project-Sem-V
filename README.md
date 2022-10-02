@@ -8,10 +8,12 @@ Currently, electric vehicle users are only provided with information about charg
  
  Team Members:
  
- B Janarathan - 120A1005
+ B Janarthanan - 120A1005
  Vaibhav Pawar - 120A1080
  Kartik Sharma - 120A1098
  Nimith Shetty - 120A1102
+
+ Project Guide - Masooda Modak
  
  
  

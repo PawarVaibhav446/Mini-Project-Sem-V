@@ -1,4 +1,3 @@
-
 var dbdir    = './database'                 ;
 var dbfile   = 'helpline.db'                ;
 var dbpath   = dbdir + '/' + dbfile         ;
